@@ -71,7 +71,7 @@ const PostList = (props) => {
       <div className="posts">{renderPosts(posts)}</div>
       <span>
         page{"   "}
-        {[...Array(Math.ceil(posts.length / postPerPage - 1)).keys()].map((v) =>
+        {[...Array(Math.floor(posts.length / postPerPage)).keys()].map((v) =>
           v === postPage ? (
             <div
               className="pageClickDivSelect"
