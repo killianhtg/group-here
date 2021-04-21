@@ -34,7 +34,10 @@ const PostList = (props) => {
   const renderPosts = (postsInput) => {
     return postsInput ? (
       postsInput
-        .slice(postPage * postPerPage, (postPage + 1) * postPerPage)
+        .slice(
+          postPage * postPerPage,
+          Math.max((postPage + 1) * postPerPage, postsInput.length)
+        )
         .map((post) => (
           <div class="postDiv" key={post._id}>
             <div class="likes">
