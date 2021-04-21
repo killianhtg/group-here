@@ -36,7 +36,7 @@ const PostList = (props) => {
       postsInput
         .slice(
           postPage * postPerPage,
-          Math.min((postPage + 1) * postPerPage, postsInput.length)
+          Math.min((postPage + 1) * postPerPage, postsInput.length - 1)
         )
         .map((post) => (
           <div class="postDiv" key={post._id}>
