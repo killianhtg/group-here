@@ -11,18 +11,16 @@
 }
 
 form {
-  padding: 40px;
+  padding: 30px;
+  border: 5px solid #5ca1f5;
+  border-radius: 20px;
 }
 
 .user-ctl {
-  margin: 50px auto;
-  width: 500px;
-  height: 500px;
-  padding: 50px;
-}
-
-.btnDiv {
-  margin: 20px 0;
+  margin: 60px auto;
+  width: 450px;
+  height: 450px;
+  padding: 45px;
 }
 
 input {
@@ -31,11 +29,7 @@ input {
 
 .nav-link {
   display: inline;
-}
-
-footer {
-  margin: 30px;
-  text-align: center;
+  padding: 12px;
 }
 
 .main-container {
@@ -45,19 +39,28 @@ footer {
 
 .recommendGroups {
   padding: 20px;
+  margin-left: 20px;
   border-radius: 5px;
   border-style: solid;
-  border-color: #bcc4f1;
+  border-width: 3px;
+  border-color: #5ca1f5;
+}
+.col-3 {
+  padding: 0;
 }
 
-.groupDiv,
-.postDiv {
+.groupDiv {
   margin: 10px;
 }
 
-.posts .postDiv {
+.posts {
   margin: 0px;
   padding: 10px;
+}
+
+.postDiv {
+  margin: 20px auto;
+  padding: 0;
 }
 
 .detailPage {
@@ -76,28 +79,29 @@ footer {
   display: inline-block;
 }
 
-h4 {
+h1 {
   margin: 0 0px;
+  font-size: 1.5rem;
 }
 
-a {
-  text-decoration: none;
-  color: black;
+h2 {
+  font-size: 1.25rem;
 }
 
 form a,
-span a {
-  text-decoration: underline #6373cc;
-  color: #6373cc;
+span a,
+p a {
+  text-decoration: underline #4965de;
+  color: #4965de;
 }
 
 .postContentDiv a,
 .groupName a {
   text-decoration: none;
-  color: #6373cc;
+  color: #4965de;
 }
 
-#mainIcon {
+#titleIcon {
   width: 50px;
 }
 
@@ -109,35 +113,73 @@ span a {
   line-height: 4;
   text-align: center;
   font-size: 20px;
-  color: #bd2b2b;
 }
 
-.postContentDiv {
+.likes svg {
+  color: #f59f69;
+}
+
+.postContentDiv,
+.commentDiv {
   padding-bottom: 10px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px dotted #e5e5e5;
 }
 
-div span {
-  display: flex;
-}
-/*
-.source {
-  display: flex;
-}*/
-
-h2 {
-  margin: 10px;
+.commentDiv,
+.commentContent,
+.postContent {
   padding: 10px;
+}
+
+div > span {
+  display: flex;
+}
+
+.form-group,
+.btnDiv {
+  margin: 20px 5px;
 }
 
 .pageClickDivSelect {
   margin-left: 20px;
-  color: red;
+  color: #4965de;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .pageClickDiv {
   margin-left: 20px;
-  color: blue;
+  color: #4965de;
   cursor: pointer;
+}
+
+.alert-danger {
+  margin: 5px 0;
+  padding: 5px 10px;
+}
+
+footer.container span {
+  text-align: center;
+}
+
+.message {
+  margin: 30px auto;
+  text-align: center;
+  display: block;
+}
+
+.addGroupForm {
+  margin: 50px 30px 0 30px;
+}
+
+.pageBar {
+  margin: 30px auto;
+}
+
+span.muted-text {
+  display: block;
+}
+
+ul > li > a {
+  margin: auto;
 }

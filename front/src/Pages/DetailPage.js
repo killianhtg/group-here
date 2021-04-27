@@ -3,11 +3,11 @@ import { useParams } from "react-router-dom";
 import CommentList from "../Components/CommentList.js";
 
 export default function DetailPage() {
-  // const [isFetching, setFetching] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [post, setPost] = useState([]);
+  const [comments, setComments] = useState([]);
   const [reload, setReload] = useState(0);
-
+  // const [reloadComment, setReloadComment] = useState
   const [loginStat, setLoginState] = useState(false);
   const [username, setUsername] = useState("");
 
@@ -30,50 +30,83 @@ export default function DetailPage() {
     fetchUser();
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = { colName: "posts", query: { post_name: params.id } };
-      const resRaw = await fetch("/query", {
-        method: "POST",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const res = await resRaw.json();
-      console.log("fetch post detail for detailpage from be", res);
-      setPost(res.data[0]);
+  const fetchData = async () => {
+    const data = {
+      colName: "posts",
+      query: { post_name: decodeURIComponent(params.id) },
     };
+    const resRaw = await fetch("/query", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const res = await resRaw.json();
+    console.log("fetch post detail for detailpage from be", res);
+    setPost(res.data[0]);
+  };
+
+  useEffect(() => {
     fetchData();
   }, [reload]);
 
   const createComment = async (event) => {
     event.preventDefault();
-    // TODO: impelement create comment
+    const data = {
+      colName: "comments",
+      data: {
+        post: post,
+        author: username,
+        content: newComment,
+        create_date: new Date(),
+      },
+    };
+    const resRaw = await fetch("/create", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    fetchData();
+    alert("Commented!");
+    setNewComment("");
   };
 
   return (
-    <div className="DetailPage">
-      {/*左边是具体的post内容和评论*/}
+    <main className="DetailPage">
       <div className="col-8 postDetailDiv">
-        <h4 className="postName">{post.post_name}</h4>
-        <div className="author">By {post.author}</div>
+        <div className="postInfo">
+          <h4 className="postName">{post.post_name}</h4>
+          <div className="author">By {post.author}</div>
+        </div>
         <p></p>
         <div className="postContent">{post.content}</div>
         <hr></hr>
-        {/*        <div className="postComments">
-          <CommentList query={{ post: post.post_name }}></CommentList>
-        </div>*/}
-        <form className="bg-light" onSubmit={createComment} hidden={true}>
+        <div className="postComments">
+          <CommentList
+            query={{ post: post.post_name }}
+            reload={reload}
+          ></CommentList>
+        </div>
+        <p hidden={loginStat}>
+          <a href="/toLogin">Login</a>
+          &nbsp;to create a comment
+        </p>
+
+        <form className="bg-light" onSubmit={createComment} hidden={!loginStat}>
           <h4>Create Comment</h4>
           <div className="form-group">
-            <label className="form-label">commnet</label>
+            <label className="form-label">comment</label>
             <input
               type="text"
               className="form-control"
-              name="group_name"
-              placeholder="Enter your groupName"
+              name="newComment"
+              placeholder="Enter your comment"
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               required
@@ -81,20 +114,13 @@ export default function DetailPage() {
             />
           </div>
           <div className="d-grid gap-2 btnDiv">
-            <button
-              className="btn btn-outline-primary"
-              type="submit"
-              hidden={!loginStat}
-            >
+            <button className="btn btn-outline-primary" type="submit">
               submit
             </button>
-            <a href="/toLogin" hidden={loginStat}>
-              Login to create a comment
-            </a>
           </div>
         </form>
       </div>
       <div className="col-4">{/*右边是加入小组的选项*/}</div>
-    </div>
+    </main>
   );
 }

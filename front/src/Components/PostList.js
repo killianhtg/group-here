@@ -6,7 +6,7 @@ const PostList = (props) => {
   const query = props.query;
   const limit = props.limit ? props.limit : 0;
   const [postPage, setPostPage] = useState(0);
-  const postPerPage = 50;
+  const postPerPage = 40;
 
   useEffect(() => {
     const fetchPostList = async () => {
@@ -21,10 +21,7 @@ const PostList = (props) => {
           body: JSON.stringify(data),
         })
       ).json();
-      console.log("res from be", res.data);
       setPosts(res.data);
-      // setPosts(res.data);
-      console.log("after setgroup", posts);
     };
     fetchPostList();
   }, [query]);
@@ -36,23 +33,35 @@ const PostList = (props) => {
       postsInput
         .slice(
           postPage * postPerPage,
-          Math.min((postPage + 1) * postPerPage, postsInput.length - 1)
+          Math.min((postPage + 1) * postPerPage, postsInput.length)
         )
         .map((post) => (
-          <div class="postDiv" key={post._id}>
-            <div class="likes">
-              <span>❤</span>
-              {/*<span>{post.likes} likes</span>*/}
+          <div className="postDiv" key={post._id}>
+            <div className="likes">
+              <svg
+                class="Zi Zi--Heart Button-zi"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                width="1.2em"
+                height="1.2em"
+              >
+                <path
+                  d="M2 8.437C2 5.505 4.294 3.094 7.207 3 9.243 3 11.092 4.19 12 6c.823-1.758 2.649-3 4.651-3C19.545 3 22 5.507 22 8.432 22 16.24 13.842 21 12 21 10.158 21 2 16.24 2 8.437z"
+                  fill-rule="evenodd"
+                ></path>
+              </svg>
             </div>
-            <div class="postContentDiv">
-              <h5>
-                <a href={"/detail/" + post.post_name}>{post.post_name}</a>
-              </h5>
-              <div class="postOverview">
+            <div className="postContentDiv">
+              <h2>
+                <a href={"/detail/" + encodeURIComponent(post.post_name)}>
+                  {post.post_name}
+                </a>
+              </h2>
+              <div className="postOverview">
                 <p>{post.content}</p>
               </div>
-              <div class="source">
-                <span class="groupName">
+              <div className="source">
+                <span className="groupName">
                   From &nbsp;
                   <a href={"/group/" + post.group}>{post.group}</a>
                 </span>
@@ -66,12 +75,23 @@ const PostList = (props) => {
     );
   };
 
+  const range = (start, end) => {
+    const tmp = [];
+    for (let i = start; i < end; i++) {
+      tmp.push(i);
+    }
+    return tmp;
+  };
+
   return (
-    <div>
+    <div className="container postDiv">
       <div className="posts">{renderPosts(posts)}</div>
-      <span>
+      <span className="pageBar">
         page{"   "}
-        {[...Array(Math.floor(posts.length / postPerPage)).keys()].map((v) =>
+        {range(
+          Math.max(0, postPage - 5),
+          Math.min(postPage + 5, Math.floor(posts.length / postPerPage))
+        ).map((v) =>
           v === postPage ? (
             <div
               className="pageClickDivSelect"
@@ -88,6 +108,52 @@ const PostList = (props) => {
       </span>
     </div>
   );
+
+  // if (renderPosts() === <div></div>) {
+  //   return (
+  //     <div>
+  //       <p>
+  //         <a href="/toLogin">Login</a> to create a post!
+  //       </p>
+  //     </div>
+  //   );
+  // } else if (posts.length < 1) {
+  //   return (
+  //     <div className="container postDiv">
+  //       <p>Create your first post!</p>
+  //     </div>
+  //   );
+  // } else if (query.group != null) {
+  //   return (
+  //     <div className="container postDiv">
+  //       <div className="posts">{renderPosts(posts)}</div>
+  //       <span className="pageBar">
+  //         page{"   "}
+  //         {[...Array(Math.floor(posts.length / postPerPage)).keys()].map((v) =>
+  //           v === postPage ? (
+  //             <div
+  //               className="pageClickDivSelect"
+  //               onClick={(event) => setPostPage(v)}
+  //             >
+  //               {v + 1}
+  //             </div>
+  //           ) : (
+  //             <div className="pageClickDiv" onClick={(event) => setPostPage(v)}>
+  //               {v + 1}
+  //             </div>
+  //           )
+  //         )}
+  //       </span>
+  //     </div>
+  //   );
+  // } else {
+  //   const postsSlice = posts.slice(0, 20);
+  //   return (
+  //     <div className="container postDiv">
+  //       <div className="posts">{renderPosts(postsSlice)}</div>
+  //     </div>
+  //   );
+  // }
 };
 
 PostList.propTypes = {

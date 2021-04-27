@@ -24,15 +24,17 @@ export default function NavUser() {
   const logout = async (event) => {
     event.preventDefault();
     await fetch("/logout");
-    setLoginState(false);
-    setUsername("");
-    setRelod(reload + 1);
+    document.location.href = "/";
+
+    // setLoginState(false);
+    // setUsername("");
+    // setRelod(reload + 1);
   };
 
   if (!loginStat) {
     return (
       <div>
-        <ul className="navbar-nav justify-content-end">
+        <ul className="navbar-nav justify-content-end nav-user">
           <li className="nav-item">
             <a className="nav-link" href="/toLogin">
               Login
@@ -51,7 +53,7 @@ export default function NavUser() {
     return (
       <div>
         Hi, {username}&nbsp;
-        <a href="/logout" onclick={logout}>
+        <a href="/logout" onClick={logout}>
           {" "}
           logout
         </a>
