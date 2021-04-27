@@ -5,7 +5,6 @@ import CommentList from "../Components/CommentList.js";
 export default function DetailPage() {
   const [newComment, setNewComment] = useState("");
   const [post, setPost] = useState([]);
-  const [comments, setComments] = useState([]);
   const [reload, setReload] = useState(0);
   // const [reloadComment, setReloadComment] = useState
   const [loginStat, setLoginState] = useState(false);
@@ -50,14 +49,14 @@ export default function DetailPage() {
 
   useEffect(() => {
     fetchData();
-  }, [reload]);
+  }, []);
 
   const createComment = async (event) => {
     event.preventDefault();
     const data = {
       colName: "comments",
       data: {
-        post: post,
+        post: post.post_name,
         author: username,
         content: newComment,
         create_date: new Date(),
@@ -72,7 +71,8 @@ export default function DetailPage() {
       body: JSON.stringify(data),
     });
 
-    fetchData();
+    // fetchData();
+    setReload(reload + 1);
     alert("Commented!");
     setNewComment("");
   };
@@ -81,7 +81,7 @@ export default function DetailPage() {
     <main className="DetailPage">
       <div className="col-8 postDetailDiv">
         <div className="postInfo">
-          <h4 className="postName">{post.post_name}</h4>
+          <h1 className="postName">{post.post_name}</h1>
           <div className="author">By {post.author}</div>
         </div>
         <p></p>
@@ -93,13 +93,13 @@ export default function DetailPage() {
             reload={reload}
           ></CommentList>
         </div>
-        <p hidden={loginStat}>
+        <p className="message" hidden={loginStat}>
           <a href="/toLogin">Login</a>
           &nbsp;to create a comment
         </p>
 
-        <form className="bg-light" onSubmit={createComment} hidden={!loginStat}>
-          <h4>Create Comment</h4>
+        <form className="" onSubmit={createComment} hidden={!loginStat}>
+          <h2>Create Comment</h2>
           <div className="form-group">
             <label className="form-label">comment</label>
             <input
